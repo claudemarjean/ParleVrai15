@@ -246,12 +246,12 @@ export const statsPageStyles = `
 .stat-label-large {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--gray-700);
+  color: var(--text-secondary);
   margin-bottom: var(--spacing-sm);
 }
 
 .stat-description {
-  color: var(--gray-600);
+  color: var(--text-tertiary);
   font-size: 0.875rem;
 }
 
@@ -275,7 +275,7 @@ export const statsPageStyles = `
 
 .progress-label {
   font-weight: 600;
-  color: var(--gray-700);
+  color: var(--text-secondary);
 }
 
 .progress-value {
@@ -286,9 +286,10 @@ export const statsPageStyles = `
 .progress-bar {
   width: 100%;
   height: 20px;
-  background-color: var(--gray-200);
+  background-color: var(--bg-tertiary);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  border: 1px solid var(--border-color);
 }
 
 .progress-fill {
@@ -312,7 +313,8 @@ export const statsPageStyles = `
   border-radius: var(--radius-lg);
   text-align: center;
   transition: all var(--transition-normal);
-  border: 2px solid var(--gray-200);
+  border: 2px solid var(--border-color);
+  background-color: var(--card-bg);
 }
 
 .achievement-badge.unlocked {
@@ -338,12 +340,12 @@ export const statsPageStyles = `
 .achievement-title {
   font-weight: 600;
   margin-bottom: var(--spacing-xs);
-  color: var(--gray-900);
+  color: var(--text-primary);
 }
 
 .achievement-description {
   font-size: 0.875rem;
-  color: var(--gray-600);
+  color: var(--text-tertiary);
   margin-bottom: var(--spacing-sm);
 }
 
@@ -361,8 +363,9 @@ export const statsPageStyles = `
 }
 
 .achievement-badge.locked .achievement-status {
-  background-color: var(--gray-300);
-  color: var(--gray-600);
+  background-color: var(--bg-tertiary);
+  color: var(--text-tertiary);
+  border: 1px solid var(--border-color);
 }
 
 .motivation-box {

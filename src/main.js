@@ -4,6 +4,7 @@
 
 import router from './router/index.js';
 import authService from './services/auth.js';
+import themeService from './services/theme.js';
 
 // Importer les pages
 import { renderHomePage, homePageStyles } from './pages/Home.js';
@@ -22,6 +23,9 @@ import { footerStyles } from './components/Footer.js';
  * Initialiser l'application
  */
 function initApp() {
+  // Initialiser le thème
+  themeService.loadTheme();
+  
   // Injecter tous les styles dans le DOM
   injectStyles();
   

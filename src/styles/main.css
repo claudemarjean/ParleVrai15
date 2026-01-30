@@ -9,7 +9,37 @@
   
   --accent: #f59e0b;
   
-  /* Couleurs neutres */
+  /* Couleurs sémantiques */
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+  
+  /* Couleurs du thème - Mode Clair par défaut */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-tertiary: #6b7280;
+  --text-muted: #9ca3af;
+  
+  --border-color: #e5e7eb;
+  --border-hover: #d1d5db;
+  
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  
+  --header-bg: #ffffff;
+  --footer-bg: #111827;
+  --footer-text: #d1d5db;
+  
+  /* Couleurs neutres (conservées pour compatibilité) */
   --gray-50: #f9fafb;
   --gray-100: #f3f4f6;
   --gray-200: #e5e7eb;
@@ -20,12 +50,6 @@
   --gray-700: #374151;
   --gray-800: #1f2937;
   --gray-900: #111827;
-  
-  /* Couleurs sémantiques */
-  --success: #10b981;
-  --error: #ef4444;
-  --warning: #f59e0b;
-  --info: #3b82f6;
   
   /* Typographie */
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -47,15 +71,53 @@
   --radius-xl: 1rem;
   
   /* Ombres */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  --shadow-sm: 0 1px 2px 0 var(--shadow-light);
+  --shadow-md: 0 4px 6px -1px var(--shadow-color);
+  --shadow-lg: 0 10px 15px -3px var(--shadow-color);
+  --shadow-xl: 0 20px 25px -5px var(--shadow-color);
   
   /* Transitions */
   --transition-fast: 150ms ease-in-out;
   --transition-normal: 250ms ease-in-out;
   --transition-slow: 350ms ease-in-out;
+}
+
+/* Mode Sombre */
+[data-theme="dark"] {
+  --bg-primary: #1f2937;
+  --bg-secondary: #111827;
+  --bg-tertiary: #0f172a;
+  
+  --text-primary: #f9fafb;
+  --text-secondary: #e5e7eb;
+  --text-tertiary: #d1d5db;
+  --text-muted: #9ca3af;
+  
+  --border-color: #374151;
+  --border-hover: #4b5563;
+  
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --shadow-light: rgba(0, 0, 0, 0.3);
+  
+  --card-bg: #1f2937;
+  --input-bg: #111827;
+  --input-border: #374151;
+  
+  --header-bg: #1f2937;
+  --footer-bg: #0f172a;
+  --footer-text: #d1d5db;
+  
+  /* Ajustement des couleurs neutres pour le mode sombre */
+  --gray-50: #1f2937;
+  --gray-100: #374151;
+  --gray-200: #4b5563;
+  --gray-300: #6b7280;
+  --gray-400: #9ca3af;
+  --gray-500: #d1d5db;
+  --gray-600: #e5e7eb;
+  --gray-700: #f3f4f6;
+  --gray-800: #f9fafb;
+  --gray-900: #ffffff;
 }
 
 /* Reset */
@@ -80,11 +142,12 @@ html {
 body {
   font-family: var(--font-sans);
   line-height: 1.6;
-  color: var(--gray-800);
-  background-color: var(--gray-50);
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
   min-height: 100vh;
   width: 100%;
   position: relative;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
 /* Prévention des débordements pour tous les éléments */
@@ -124,7 +187,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.2;
-  color: var(--gray-900);
+  color: var(--text-primary);
   margin-bottom: var(--spacing-md);
 }
 
@@ -178,7 +241,7 @@ a:hover {
 }
 
 .btn-secondary {
-  background-color: white;
+  background-color: var(--card-bg);
   color: var(--primary);
   border: 2px solid var(--primary);
 }
@@ -232,11 +295,12 @@ a:hover {
 
 /* Cartes */
 .card {
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition-normal);
+  transition: box-shadow var(--transition-normal), background-color var(--transition-normal);
+  border: 1px solid var(--border-color);
 }
 
 .card:hover {
@@ -264,7 +328,7 @@ a:hover {
   display: block;
   margin-bottom: var(--spacing-sm);
   font-weight: 500;
-  color: var(--gray-700);
+  color: var(--text-secondary);
 }
 
 .form-input,
@@ -273,9 +337,11 @@ a:hover {
   width: 100%;
   padding: var(--spacing-sm) var(--spacing-md);
   font-size: 1rem;
-  border: 1px solid var(--gray-300);
+  border: 1px solid var(--input-border);
   border-radius: var(--radius-md);
-  transition: border-color var(--transition-fast);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  background-color: var(--input-bg);
+  color: var(--text-primary);
 }
 
 .form-input:focus,
@@ -357,7 +423,7 @@ a:hover {
 .text-lg { font-size: 1.125rem; }
 .text-xl { font-size: 1.25rem; }
 
-.text-gray { color: var(--gray-600); }
+.text-gray { color: var(--text-tertiary); }
 .text-primary { color: var(--primary); }
 .text-success { color: var(--success); }
 .text-error { color: var(--error); }

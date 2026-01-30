@@ -393,16 +393,18 @@ export const adminPageStyles = `
 }
 
 .lessons-table th {
-  background-color: var(--gray-100);
+  background-color: var(--bg-tertiary);
   padding: var(--spacing-md);
   text-align: left;
   font-weight: 600;
-  border-bottom: 2px solid var(--gray-300);
+  border-bottom: 2px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 .lessons-table td {
   padding: var(--spacing-md);
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
 }
 
 .lessons-table .actions {
@@ -441,13 +443,14 @@ export const adminPageStyles = `
 }
 
 .modal-content {
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: var(--radius-lg);
   max-width: 800px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-color);
 }
 
 .modal-large {
@@ -459,11 +462,12 @@ export const adminPageStyles = `
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-xl);
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h2 {
   margin: 0;
+  color: var(--text-primary);
 }
 
 .close-btn {
@@ -471,7 +475,7 @@ export const adminPageStyles = `
   border: none;
   font-size: 2rem;
   cursor: pointer;
-  color: var(--gray-600);
+  color: var(--text-tertiary);
   line-height: 1;
   padding: 0;
   width: 32px;
@@ -479,10 +483,11 @@ export const adminPageStyles = `
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: color var(--transition-fast);
 }
 
 .close-btn:hover {
-  color: var(--gray-900);
+  color: var(--text-primary);
 }
 
 .modal-body {
@@ -501,7 +506,7 @@ export const adminPageStyles = `
   gap: var(--spacing-md);
   margin-top: var(--spacing-xl);
   padding-top: var(--spacing-xl);
-  border-top: 1px solid var(--gray-200);
+  border-top: 1px solid var(--border-color);
 }
 
 /* Preview */
@@ -512,7 +517,7 @@ export const adminPageStyles = `
 .preview-section {
   margin-bottom: var(--spacing-2xl);
   padding-bottom: var(--spacing-xl);
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .preview-section:last-child {
@@ -525,11 +530,13 @@ export const adminPageStyles = `
 }
 
 .exercise-preview {
-  background-color: var(--gray-100);
+  background-color: var(--bg-tertiary);
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
   margin: var(--spacing-md) 0;
   white-space: pre-line;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
 }
 
 @media (max-width: 640px) {

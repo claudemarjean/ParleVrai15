@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Mode Sombre - ParleVrai15</title>
+  <link rel="stylesheet" href="/src/styles/main.css">
+  <style>
+    .test-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .test-section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+    }
+    
+    .test-section h2 {
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+    
+    .color-demo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .color-box {
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+    
+    .theme-toggle-demo {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      padding: 1rem;
+      background-color: var(--card-bg);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-xl);
+      z-index: 1000;
+    }
+    
+    .modal-demo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    
+    .modal-demo.show {
+      display: flex;
+    }
+    
+    .modal-content-demo {
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-xl);
+    }
+  </style>
+</head>
+<body>
+  <div class="theme-toggle-demo">
+    <h3 style="margin-bottom: 1rem;">Contrôles de Test</h3>
+    <button id="toggle-theme" class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;">
+      Basculer Thème
+    </button>
+    <button id="show-modal" class="btn btn-secondary" style="width: 100%;">
+      Afficher Modale
+    </button>
+    <p id="current-theme" style="margin-top: 1rem; text-align: center; font-weight: bold; color: var(--primary);"></p>
+  </div>
+
+  <div class="test-container">
+    <h1 style="text-align: center; margin-bottom: 2rem;">🧪 Test de Cohérence des Thèmes</h1>
+    
+    <!-- Section Couleurs de Base -->
+    <div class="test-section">
+      <h2>Couleurs de Base</h2>
+      <div class="color-demo">
+        <div class="color-box" style="background-color: var(--bg-primary);">
+          <strong>--bg-primary</strong>
+          <p style="color: var(--text-primary);">Fond principal</p>
+        </div>
+        <div class="color-box" style="background-color: var(--bg-secondary);">
+          <strong>--bg-secondary</strong>
+          <p style="color: var(--text-primary);">Fond secondaire</p>
+        </div>
+        <div class="color-box" style="background-color: var(--bg-tertiary);">
+          <strong>--bg-tertiary</strong>
+          <p style="color: var(--text-primary);">Fond tertiaire</p>
+        </div>
+        <div class="color-box" style="background-color: var(--card-bg); box-shadow: var(--shadow-md);">
+          <strong>--card-bg</strong>
+          <p style="color: var(--text-primary);">Fond de carte</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Textes -->
+    <div class="test-section">
+      <h2>Textes</h2>
+      <p style="color: var(--text-primary); font-size: 1.25rem; font-weight: bold;">Texte Principal (--text-primary)</p>
+      <p style="color: var(--text-secondary);">Texte Secondaire (--text-secondary)</p>
+      <p style="color: var(--text-tertiary); font-size: 0.875rem;">Texte Tertiaire (--text-tertiary)</p>
+      <p style="color: var(--text-muted); font-size: 0.875rem;">Texte Atténué (--text-muted)</p>
+    </div>
+
+    <!-- Section Boutons -->
+    <div class="test-section">
+      <h2>Boutons</h2>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button class="btn btn-primary">Bouton Primary</button>
+        <button class="btn btn-secondary">Bouton Secondary</button>
+        <button class="btn btn-success">Bouton Success</button>
+        <button class="btn btn-primary btn-lg">Bouton Large</button>
+        <button class="btn btn-secondary btn-sm">Bouton Small</button>
+        <button class="btn btn-primary" disabled>Bouton Désactivé</button>
+      </div>
+    </div>
+
+    <!-- Section Formulaires -->
+    <div class="test-section">
+      <h2>Formulaires</h2>
+      <div class="form-group">
+        <label class="form-label">Label de formulaire</label>
+        <input type="text" class="form-input" placeholder="Champ de saisie">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Zone de texte</label>
+        <textarea class="form-textarea" placeholder="Votre message"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Sélection</label>
+        <select class="form-select">
+          <option>Option 1</option>
+          <option>Option 2</option>
+          <option>Option 3</option>
+        </select>
+      </div>
+      <p class="form-error">Message d'erreur de formulaire</p>
+    </div>
+
+    <!-- Section Cartes -->
+    <div class="test-section">
+      <h2>Cartes</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        <div class="card">
+          <h3>Carte Simple</h3>
+          <p>Contenu de la carte avec texte normal.</p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Carte avec Header</h3>
+          </div>
+          <p>Le header a une bordure en bas.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Badges -->
+    <div class="test-section">
+      <h2>Badges & Labels</h2>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+        <span class="badge">Badge</span>
+        <span style="padding: 0.25rem 0.5rem; background: var(--success); color: white; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">Success</span>
+        <span style="padding: 0.25rem 0.5rem; background: var(--error); color: white; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">Error</span>
+        <span style="padding: 0.25rem 0.5rem; background: var(--warning); color: white; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">Warning</span>
+      </div>
+    </div>
+
+    <!-- Section Bordures -->
+    <div class="test-section">
+      <h2>Bordures</h2>
+      <div style="display: grid; gap: 1rem;">
+        <div style="padding: 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+          Bordure normale (--border-color)
+        </div>
+        <div style="padding: 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-md);">
+          Bordure double épaisseur
+        </div>
+        <div style="padding: 1rem; border: 1px solid var(--primary); border-radius: var(--radius-md);">
+          Bordure primary
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Ombres -->
+    <div class="test-section">
+      <h2>Ombres</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem;">
+        <div style="padding: 1rem; background: var(--card-bg); box-shadow: var(--shadow-sm); border-radius: var(--radius-md);">shadow-sm</div>
+        <div style="padding: 1rem; background: var(--card-bg); box-shadow: var(--shadow-md); border-radius: var(--radius-md);">shadow-md</div>
+        <div style="padding: 1rem; background: var(--card-bg); box-shadow: var(--shadow-lg); border-radius: var(--radius-md);">shadow-lg</div>
+        <div style="padding: 1rem; background: var(--card-bg); box-shadow: var(--shadow-xl); border-radius: var(--radius-md);">shadow-xl</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modale de Test -->
+  <div id="modal-demo" class="modal-demo">
+    <div class="modal-content-demo">
+      <h2 style="margin-bottom: 1rem; color: var(--text-primary);">Modale de Test</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+        Cette modale teste la cohérence des couleurs en mode sombre et clair.
+        Vérifiez que tous les éléments sont bien visibles.
+      </p>
+      <div class="form-group">
+        <label class="form-label">Champ dans la modale</label>
+        <input type="text" class="form-input" placeholder="Test">
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+        <button id="close-modal" class="btn btn-secondary">Fermer</button>
+        <button class="btn btn-primary">Valider</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // Basculer le thème
+    const html = document.documentElement;
+    const toggleBtn = document.getElementById('toggle-theme');
+    const currentThemeDisplay = document.getElementById('current-theme');
+    
+    function updateThemeDisplay() {
+      const theme = html.getAttribute('data-theme') || 'light';
+      currentThemeDisplay.textContent = theme === 'dark' ? '🌙 Mode Sombre' : '☀️ Mode Clair';
+    }
+    
+    updateThemeDisplay();
+    
+    toggleBtn.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      updateThemeDisplay();
+    });
+    
+    // Gérer la modale
+    const modal = document.getElementById('modal-demo');
+    const showModalBtn = document.getElementById('show-modal');
+    const closeModalBtn = document.getElementById('close-modal');
+    
+    showModalBtn.addEventListener('click', () => {
+      modal.classList.add('show');
+    });
+    
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.remove('show');
+    });
+    
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -209,7 +209,7 @@ export const calendarPageStyles = `
 .calendar-day-name {
   text-align: center;
   font-weight: 600;
-  color: var(--gray-600);
+  color: var(--text-tertiary);
   padding: var(--spacing-sm);
   font-size: 0.875rem;
 }
@@ -222,10 +222,11 @@ export const calendarPageStyles = `
   justify-content: center;
   padding: var(--spacing-sm);
   border-radius: var(--radius-md);
-  background-color: var(--gray-50);
+  background-color: var(--bg-tertiary);
   position: relative;
   transition: all var(--transition-fast);
   cursor: pointer;
+  border: 1px solid var(--border-color);
 }
 
 .calendar-day:hover:not(.empty):not(.future) {
@@ -235,12 +236,14 @@ export const calendarPageStyles = `
 
 .calendar-day.empty {
   background-color: transparent;
+  border-color: transparent;
   cursor: default;
 }
 
 .calendar-day.completed {
   background-color: var(--success);
   color: white;
+  border-color: var(--success);
 }
 
 .calendar-day.today {
@@ -249,9 +252,10 @@ export const calendarPageStyles = `
 }
 
 .calendar-day.future {
-  background-color: var(--gray-100);
-  color: var(--gray-400);
+  background-color: var(--bg-tertiary);
+  color: var(--text-muted);
   cursor: default;
+  opacity: 0.6;
 }
 
 .day-number {
@@ -297,11 +301,12 @@ export const calendarPageStyles = `
 
 .legend-dot.today {
   border: 2px solid var(--primary);
-  background-color: var(--gray-50);
+  background-color: var(--bg-tertiary);
 }
 
 .legend-dot.future {
-  background-color: var(--gray-100);
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
 }
 
 @media (max-width: 640px) {

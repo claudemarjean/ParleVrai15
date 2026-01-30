@@ -253,7 +253,7 @@ export const lessonPageStyles = `
 }
 
 .back-link {
-  color: var(--gray-600);
+  color: var(--text-tertiary);
   font-weight: 500;
   transition: color var(--transition-fast);
 }
@@ -269,7 +269,7 @@ export const lessonPageStyles = `
 }
 
 .lesson-date {
-  color: var(--gray-600);
+  color: var(--text-tertiary);
   font-size: 0.875rem;
 }
 
@@ -284,7 +284,7 @@ export const lessonPageStyles = `
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-lg);
   padding-bottom: var(--spacing-md);
-  border-bottom: 2px solid var(--gray-200);
+  border-bottom: 2px solid var(--border-color);
 }
 
 .section-icon {
@@ -303,16 +303,18 @@ export const lessonPageStyles = `
   font-size: 1.125rem;
   line-height: 2;
   margin-bottom: var(--spacing-lg);
-  color: var(--gray-800);
+  color: var(--text-secondary);
 }
 
 .reading-tip,
 .vocab-tip {
-  background-color: var(--gray-50);
+  background-color: var(--bg-tertiary);
   padding: var(--spacing-md);
   border-left: 4px solid var(--primary);
   border-radius: var(--radius-md);
   margin-top: var(--spacing-lg);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--primary);
 }
 
 .grammar-title {
@@ -324,13 +326,14 @@ export const lessonPageStyles = `
 .grammar-explanation {
   white-space: pre-line;
   margin-bottom: var(--spacing-lg);
-  color: var(--gray-700);
+  color: var(--text-secondary);
 }
 
 .grammar-examples {
-  background-color: var(--gray-50);
+  background-color: var(--bg-tertiary);
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
 }
 
 .grammar-examples h4 {
@@ -367,23 +370,24 @@ export const lessonPageStyles = `
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-md);
-  background-color: var(--gray-50);
+  background-color: var(--bg-tertiary);
   border-radius: var(--radius-md);
-  transition: transform var(--transition-fast);
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+  border: 1px solid var(--border-color);
 }
 
 .vocabulary-item:hover {
   transform: translateX(5px);
-  background-color: var(--gray-100);
+  background-color: var(--bg-secondary);
 }
 
 .vocab-word {
   font-weight: 600;
-  color: var(--gray-900);
+  color: var(--text-primary);
 }
 
 .vocab-translation {
-  color: var(--gray-600);
+  color: var(--text-tertiary);
   font-style: italic;
 }
 
@@ -404,9 +408,10 @@ export const lessonPageStyles = `
 }
 
 .exercise-tips {
-  background-color: var(--gray-50);
+  background-color: var(--bg-tertiary);
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
 }
 
 .exercise-tips h4 {
@@ -439,11 +444,13 @@ export const lessonPageStyles = `
 
 .ai-prompt-box {
   position: relative;
-  background-color: var(--gray-900);
-  color: var(--gray-100);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   padding: var(--spacing-lg);
   border-radius: var(--radius-md);
   margin-bottom: var(--spacing-md);
+  border: 2px solid var(--border-color);
+  font-family: 'Courier New', monospace;
 }
 
 .ai-prompt-box pre {

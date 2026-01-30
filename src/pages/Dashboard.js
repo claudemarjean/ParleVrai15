@@ -181,7 +181,7 @@ export const dashboardStyles = `
 }
 
 .stat-label {
-  color: var(--gray-600);
+  color: var(--text-tertiary);
   font-size: 0.875rem;
 }
 
@@ -199,13 +199,14 @@ export const dashboardStyles = `
 .lesson-level {
   display: inline-block;
   padding: var(--spacing-xs) var(--spacing-sm);
-  background-color: var(--gray-100);
-  color: var(--gray-700);
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
   border-radius: var(--radius-sm);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   margin-bottom: var(--spacing-sm);
+  border: 1px solid var(--border-color);
 }
 
 .lesson-badge {
@@ -227,7 +228,7 @@ export const dashboardStyles = `
 
 .lesson-preview {
   margin-bottom: var(--spacing-lg);
-  color: var(--gray-700);
+  color: var(--text-secondary);
   line-height: 1.8;
 }
 
@@ -239,7 +240,7 @@ export const dashboardStyles = `
   transition: all var(--transition-normal);
   cursor: pointer;
   text-decoration: none;
-  color: inherit;
+  color: var(--text-primary);
 }
 
 .quick-link-card:hover {
@@ -253,7 +254,7 @@ export const dashboardStyles = `
 
 .quick-link-card h3 {
   margin-bottom: var(--spacing-xs);
-  color: var(--gray-900);
+  color: var(--text-primary);
 }
 
 .motivation-card {

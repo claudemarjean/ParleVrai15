@@ -2,9 +2,15 @@
  * Composant Header
  */
 
+import themeService from '../services/theme.js';
+
 export function createHeader(isAuthenticated = false, isAdmin = false) {
   const header = document.createElement('header');
   header.className = 'header';
+  
+  const currentTheme = themeService.getCurrentTheme();
+  const themeIcon = currentTheme === 'dark' ? '☀️' : '🌙';
+  
   header.innerHTML = `
     <nav class="navbar">
       <div class="container">
@@ -20,8 +26,14 @@ export function createHeader(isAuthenticated = false, isAdmin = false) {
               <a href="/calendar" class="nav-link" data-link>Calendrier</a>
               <a href="/stats" class="nav-link" data-link>Statistiques</a>
               ${isAdmin ? `<a href="/admin" class="nav-link" data-link>Admin</a>` : ''}
+              <button id="theme-toggle" class="btn-icon" title="Changer de thème" aria-label="Basculer le thème">
+                ${themeIcon}
+              </button>
               <button id="logout-btn" class="btn btn-secondary btn-sm">Déconnexion</button>
             ` : `
+              <button id="theme-toggle" class="btn-icon" title="Changer de thème" aria-label="Basculer le thème">
+                ${themeIcon}
+              </button>
               <a href="/login" class="btn btn-secondary btn-sm" data-link>Se connecter</a>
               <a href="/signup" class="btn btn-primary btn-sm" data-link>S'inscrire</a>
             `}
@@ -37,6 +49,17 @@ export function createHeader(isAuthenticated = false, isAdmin = false) {
     </nav>
   `;
   
+  // Attacher l'événement de changement de thème
+  setTimeout(() => {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const newTheme = themeService.toggleTheme();
+        themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      });
+    }
+  }, 0);
+  
   return header;
 }
 
@@ -45,11 +68,13 @@ export function createHeader(isAuthenticated = false, isAdmin = false) {
  */
 export const headerStyles = `
 .header {
-  background-color: white;
+  background-color: var(--header-bg);
   box-shadow: var(--shadow-sm);
   position: sticky;
   top: 0;
   z-index: 100;
+  transition: background-color var(--transition-normal);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .navbar-content {
@@ -62,8 +87,9 @@ export const headerStyles = `
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--gray-900);
+  color: var(--text-primary);
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
 .logo-accent {
@@ -77,13 +103,33 @@ export const headerStyles = `
 }
 
 .nav-link {
-  color: var(--gray-700);
+  color: var(--text-secondary);
   font-weight: 500;
   transition: color var(--transition-fast);
 }
 
 .nav-link:hover {
   color: var(--primary);
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.btn-icon:hover {
+  background-color: var(--bg-tertiary);
+  transform: scale(1.1);
 }
 
 .mobile-menu-btn {
@@ -99,7 +145,7 @@ export const headerStyles = `
 .mobile-menu-btn span {
   width: 24px;
   height: 2px;
-  background-color: var(--gray-700);
+  background-color: var(--text-primary);
   transition: all var(--transition-fast);
 }
 
@@ -110,12 +156,13 @@ export const headerStyles = `
     top: 100%;
     left: 0;
     right: 0;
-    background-color: white;
+    background-color: var(--header-bg);
     flex-direction: column;
     padding: var(--spacing-lg);
     box-shadow: var(--shadow-md);
     width: 100%;
     gap: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
   }
   
   .nav-links.active {
@@ -125,6 +172,10 @@ export const headerStyles = `
   .nav-links .btn {
     width: 100%;
     justify-content: center;
+  }
+  
+  .nav-links .btn-icon {
+    width: 100%;
   }
   
   .mobile-menu-btn {

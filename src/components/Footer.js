@@ -46,10 +46,12 @@ export function createFooter() {
  */
 export const footerStyles = `
 .footer {
-  background-color: var(--gray-900);
-  color: var(--gray-300);
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
   margin-top: auto;
   padding: var(--spacing-3xl) 0 var(--spacing-lg);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+  border-top: 1px solid var(--border-color);
 }
 
 .footer-content {
@@ -61,7 +63,7 @@ export const footerStyles = `
 
 .footer-section h3,
 .footer-section h4 {
-  color: white;
+  color: var(--text-primary);
   margin-bottom: var(--spacing-md);
   font-size: 1rem;
 }
@@ -75,7 +77,7 @@ export const footerStyles = `
 }
 
 .footer-links a {
-  color: var(--gray-400);
+  color: var(--text-tertiary);
   transition: color var(--transition-fast);
 }
 
@@ -85,9 +87,9 @@ export const footerStyles = `
 
 .footer-bottom {
   padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--gray-800);
+  border-top: 1px solid var(--border-color);
   text-align: center;
-  color: var(--gray-500);
+  color: var(--text-muted);
 }
 
 @media (max-width: 640px) {

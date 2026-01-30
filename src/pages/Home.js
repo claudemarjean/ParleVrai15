@@ -215,7 +215,7 @@ export const homePageStyles = `
 /* How it works */
 .how-it-works {
   padding: var(--spacing-3xl) 0;
-  background-color: white;
+  background-color: var(--bg-primary);
 }
 
 .section-title {
@@ -239,7 +239,7 @@ export const homePageStyles = `
 /* Why section */
 .why-section {
   padding: var(--spacing-3xl) 0;
-  background-color: var(--gray-50);
+  background-color: var(--bg-secondary);
 }
 
 .why-content {
@@ -290,7 +290,7 @@ export const homePageStyles = `
 }
 
 .stat-label {
-  color: var(--gray-600);
+  color: var(--text-tertiary);
   margin-top: var(--spacing-sm);
 }
 
