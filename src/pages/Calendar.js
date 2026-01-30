@@ -304,6 +304,67 @@ export const calendarPageStyles = `
   background-color: var(--gray-100);
 }
 
+@media (max-width: 640px) {
+  .calendar-page {
+    padding: var(--spacing-lg) 0;
+  }
+  
+  .calendar-container {
+    padding: var(--spacing-md);
+    overflow-x: auto;
+  }
+  
+  .calendar-header h2 {
+    font-size: 1.125rem;
+  }
+  
+  .calendar-grid {
+    gap: 2px;
+    min-width: 280px;
+  }
+  
+  .calendar-day {
+    padding: var(--spacing-xs);
+    min-height: 45px;
+  }
+  
+  .day-number {
+    font-size: 0.813rem;
+  }
+  
+  .day-status {
+    font-size: 0.938rem;
+  }
+  
+  .calendar-day-name {
+    font-size: 0.688rem;
+    padding: var(--spacing-xs) 0;
+  }
+  
+  .calendar-legend {
+    padding: var(--spacing-md);
+  }
+  
+  .legend-items {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .calendar-container {
+    padding: var(--spacing-lg);
+  }
+  
+  .calendar-grid {
+    gap: 4px;
+  }
+  
+  .calendar-day {
+    padding: var(--spacing-sm);
+  }
+}
+
 @media (max-width: 768px) {
   .calendar-grid {
     gap: 2px;

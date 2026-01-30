@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Responsive - ParleVrai15</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f3f4f6;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      color: #1f2937;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .info-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .current-size {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2563eb;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    .device-type {
+      text-align: center;
+      font-size: 18px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+    
+    .breakpoints {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .breakpoint {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #e5e7eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .breakpoint.active {
+      border-left-color: #10b981;
+      background: #f0fdf4;
+    }
+    
+    .breakpoint-name {
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 5px;
+    }
+    
+    .breakpoint.active .breakpoint-name {
+      color: #10b981;
+    }
+    
+    .breakpoint-range {
+      color: #6b7280;
+      font-size: 14px;
+    }
+    
+    .test-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    
+    .test-link {
+      display: block;
+      padding: 12px 20px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    
+    .test-link:hover {
+      background: #1e40af;
+    }
+    
+    .tips {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+    
+    .tips h3 {
+      color: #92400e;
+      margin-bottom: 15px;
+    }
+    
+    .tips ul {
+      margin-left: 20px;
+      color: #78350f;
+    }
+    
+    .tips li {
+      margin-bottom: 8px;
+    }
+    
+    @media (max-width: 640px) {
+      body {
+        padding: 10px;
+      }
+      
+      h1 {
+        font-size: 24px;
+      }
+      
+      .breakpoints {
+        grid-template-columns: 1fr;
+      }
+      
+      .test-links {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 Test Responsive - ParleVrai15</h1>
+    
+    <div class="info-box">
+      <div class="current-size" id="current-size">
+        Largeur: <span id="width">0</span>px × Hauteur: <span id="height">0</span>px
+      </div>
+      <div class="device-type" id="device-type">
+        Type d'appareil: <span id="type"></span>
+      </div>
+    </div>
+    
+    <div class="breakpoints">
+      <div class="breakpoint" data-max="374">
+        <div class="breakpoint-name">📱 Très Petit Mobile</div>
+        <div class="breakpoint-range">< 375px</div>
+      </div>
+      
+      <div class="breakpoint" data-min="375" data-max="640">
+        <div class="breakpoint-name">📱 Mobile</div>
+        <div class="breakpoint-range">375px - 640px</div>
+      </div>
+      
+      <div class="breakpoint" data-min="641" data-max="1024">
+        <div class="breakpoint-name">📱 Tablette</div>
+        <div class="breakpoint-range">641px - 1024px</div>
+      </div>
+      
+      <div class="breakpoint" data-min="1025" data-max="1440">
+        <div class="breakpoint-name">💻 Desktop</div>
+        <div class="breakpoint-range">1025px - 1440px</div>
+      </div>
+      
+      <div class="breakpoint" data-min="1441">
+        <div class="breakpoint-name">🖥️ Grand Écran</div>
+        <div class="breakpoint-range">> 1440px</div>
+      </div>
+    </div>
+    
+    <div class="info-box">
+      <h2 style="margin-bottom: 15px;">Tester les Pages</h2>
+      <div class="test-links">
+        <a href="/" class="test-link" target="_blank">🏠 Accueil</a>
+        <a href="/login" class="test-link" target="_blank">🔐 Connexion</a>
+        <a href="/dashboard" class="test-link" target="_blank">📊 Dashboard</a>
+        <a href="/lesson" class="test-link" target="_blank">📖 Leçon</a>
+        <a href="/calendar" class="test-link" target="_blank">📅 Calendrier</a>
+        <a href="/stats" class="test-link" target="_blank">📈 Statistiques</a>
+      </div>
+    </div>
+    
+    <div class="tips">
+      <h3>💡 Conseils pour Tester</h3>
+      <ul>
+        <li><strong>Chrome/Edge:</strong> F12 → Cliquer sur l'icône mobile → Sélectionner un appareil</li>
+        <li><strong>Firefox:</strong> F12 → Cliquer sur l'icône Responsive Design Mode</li>
+        <li><strong>Safari:</strong> Développement → Entrer en mode Design Adaptatif</li>
+        <li><strong>Tailles recommandées:</strong>
+          <ul>
+            <li>iPhone SE: 375 x 667</li>
+            <li>iPhone 12/13: 390 x 844</li>
+            <li>iPad Mini: 768 x 1024</li>
+            <li>iPad Pro: 1024 x 1366</li>
+            <li>Desktop: 1440 x 900</li>
+          </ul>
+        </li>
+        <li><strong>Vérifier:</strong> Pas de scroll horizontal, textes lisibles, boutons cliquables</li>
+        <li><strong>Orientation:</strong> Tester en mode portrait ET paysage</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    function updateSize() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      
+      document.getElementById('width').textContent = width;
+      document.getElementById('height').textContent = height;
+      
+      // Déterminer le type d'appareil
+      let type = '';
+      if (width < 375) {
+        type = '📱 Très Petit Mobile';
+      } else if (width < 641) {
+        type = '📱 Mobile';
+      } else if (width < 1025) {
+        type = '📱 Tablette';
+      } else if (width < 1441) {
+        type = '💻 Desktop';
+      } else {
+        type = '🖥️ Grand Écran';
+      }
+      
+      document.getElementById('type').textContent = type;
+      
+      // Mettre à jour les breakpoints actifs
+      document.querySelectorAll('.breakpoint').forEach(bp => {
+        const min = parseInt(bp.dataset.min) || 0;
+        const max = parseInt(bp.dataset.max) || Infinity;
+        
+        if (width >= min && width <= max) {
+          bp.classList.add('active');
+        } else {
+          bp.classList.remove('active');
+        }
+      });
+    }
+    
+    // Mise à jour initiale
+    updateSize();
+    
+    // Mise à jour lors du redimensionnement
+    window.addEventListener('resize', updateSize);
+    
+    // Mise à jour toutes les 100ms pour un affichage fluide
+    setInterval(updateSize, 100);
+  </script>
+</body>
+</html>

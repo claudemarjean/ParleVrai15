@@ -483,6 +483,85 @@ export const lessonPageStyles = `
   margin-bottom: 0;
 }
 
+@media (max-width: 640px) {
+  .lesson-page {
+    padding: var(--spacing-lg) 0;
+  }
+  
+  .lesson-header-section {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .lesson-meta {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    align-items: flex-start;
+  }
+  
+  .lesson-section {
+    padding: var(--spacing-lg);
+  }
+  
+  .section-number {
+    font-size: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+  }
+  
+  .vocabulary-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+  
+  .vocab-word {
+    font-size: 1rem;
+  }
+  
+  .exercise-template {
+    font-size: 0.938rem;
+    padding: var(--spacing-md);
+  }
+  
+  .grammar-content,
+  .reading-text {
+    font-size: 0.938rem;
+  }
+  
+  .prompt-box {
+    padding: var(--spacing-md);
+  }
+  
+  .prompt-text {
+    font-size: 0.875rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .action-buttons .btn {
+    width: 100%;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .lesson-section {
+    padding: var(--spacing-xl);
+  }
+  
+  .section-number {
+    font-size: 2.5rem;
+  }
+  
+  .exercise-template {
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
   .vocabulary-item {
     flex-direction: column;

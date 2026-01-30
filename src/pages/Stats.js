@@ -380,6 +380,83 @@ export const statsPageStyles = `
   color: rgba(255, 255, 255, 0.95);
 }
 
+@media (max-width: 640px) {
+  .stats-page {
+    padding: var(--spacing-lg) 0;
+  }
+  
+  .stats-grid,
+  .stats-detail {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .stat-card-large {
+    padding: var(--spacing-lg);
+  }
+  
+  .stat-icon-large {
+    font-size: 2.5rem;
+  }
+  
+  .stat-value-large {
+    font-size: 2.5rem;
+  }
+  
+  .stat-label-large {
+    font-size: 1rem;
+  }
+  
+  .stat-description {
+    font-size: 0.875rem;
+  }
+  
+  .stat-card {
+    padding: var(--spacing-lg);
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+  }
+  
+  .stat-value {
+    font-size: 2rem;
+  }
+  
+  .progress-overview {
+    padding: var(--spacing-lg);
+  }
+  
+  .progress-bar-container {
+    height: 8px;
+  }
+  
+  .achievement-card {
+    padding: var(--spacing-md);
+  }
+  
+  .motivation-card {
+    padding: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stats-detail {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stat-card:last-child {
+    grid-column: 1 / -1;
+    max-width: 50%;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
   .stats-grid,
   .stats-detail {

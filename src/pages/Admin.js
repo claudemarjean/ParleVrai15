@@ -532,6 +532,80 @@ export const adminPageStyles = `
   white-space: pre-line;
 }
 
+@media (max-width: 640px) {
+  .admin-page {
+    padding: var(--spacing-lg) 0;
+  }
+  
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+  
+  .admin-header .btn {
+    width: 100%;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .lessons-table {
+    overflow-x: auto;
+    display: block;
+  }
+  
+  .lessons-table table {
+    min-width: 600px;
+  }
+  
+  .lessons-table .actions {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  
+  .lessons-table .actions .btn {
+    width: 100%;
+    font-size: 0.813rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  .modal-content {
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    max-width: 100%;
+    width: 100%;
+    padding: var(--spacing-lg);
+  }
+  
+  .modal-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+  
+  .close-modal {
+    align-self: flex-end;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .lessons-table {
+    overflow-x: auto;
+  }
+  
+  .modal-content {
+    max-width: 90%;
+  }
+}
+
 @media (max-width: 768px) {
   .form-row {
     grid-template-columns: 1fr;

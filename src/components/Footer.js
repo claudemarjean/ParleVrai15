@@ -89,4 +89,40 @@ export const footerStyles = `
   text-align: center;
   color: var(--gray-500);
 }
+
+@media (max-width: 640px) {
+  .footer {
+    padding: var(--spacing-2xl) 0 var(--spacing-md);
+  }
+  
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    text-align: center;
+  }
+  
+  .footer-section h3,
+  .footer-section h4 {
+    font-size: 0.938rem;
+  }
+  
+  .footer-links {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .footer-bottom {
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .footer-section:first-child {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+}
 `;

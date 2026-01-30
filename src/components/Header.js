@@ -114,14 +114,43 @@ export const headerStyles = `
     flex-direction: column;
     padding: var(--spacing-lg);
     box-shadow: var(--shadow-md);
+    width: 100%;
+    gap: var(--spacing-md);
   }
   
   .nav-links.active {
     display: flex;
   }
   
+  .nav-links .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
   .mobile-menu-btn {
     display: flex;
+  }
+  
+  .logo {
+    font-size: 1.25rem;
+  }
+  
+  .navbar-content {
+    padding: var(--spacing-sm) 0;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nav-links {
+    gap: var(--spacing-md);
+  }
+  
+  .nav-link {
+    font-size: 0.875rem;
+  }
+  
+  .logo {
+    font-size: 1.375rem;
   }
 }
 `;

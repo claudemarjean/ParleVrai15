@@ -264,15 +264,47 @@ export const authPageStyles = `
   display: flex;
   align-items: center;
   padding: var(--spacing-3xl) 0;
+  width: 100%;
 }
 
 .auth-card {
   max-width: 500px;
+  width: 100%;
   margin: 0 auto;
   padding: var(--spacing-2xl);
 }
 
 .auth-card h1 {
   margin-bottom: var(--spacing-sm);
+}
+
+@media (max-width: 640px) {
+  .auth-page {
+    padding: var(--spacing-xl) 0;
+    align-items: flex-start;
+  }
+  
+  .auth-card {
+    padding: var(--spacing-lg);
+    box-shadow: none;
+  }
+  
+  .auth-card h1 {
+    font-size: 1.5rem;
+  }
+  
+  .form-group {
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .auth-page {
+    padding: var(--spacing-2xl) 0;
+  }
+  
+  .auth-card {
+    padding: var(--spacing-xl);
+  }
 }
 `;
