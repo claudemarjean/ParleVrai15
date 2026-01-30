@@ -1,0 +1,92 @@
+/**
+ * Composant Footer
+ */
+
+export function createFooter() {
+  const footer = document.createElement('footer');
+  footer.className = 'footer';
+  footer.innerHTML = `
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>ParleVrai<span class="logo-accent">15</span></h3>
+          <p class="text-gray">Parler français, pour de vrai.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="/" data-link>Accueil</a></li>
+            <li><a href="/login" data-link>Se connecter</a></li>
+            <li><a href="/signup" data-link>S'inscrire</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>À propos</h4>
+          <ul class="footer-links">
+            <li><a href="#" data-link>Notre méthode</a></li>
+            <li><a href="#" data-link>Contact</a></li>
+            <li><a href="#" data-link>Mentions légales</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; ${new Date().getFullYear()} ParleVrai15. Tous droits réservés.</p>
+      </div>
+    </div>
+  `;
+  
+  return footer;
+}
+
+/**
+ * Styles pour le footer
+ */
+export const footerStyles = `
+.footer {
+  background-color: var(--gray-900);
+  color: var(--gray-300);
+  margin-top: auto;
+  padding: var(--spacing-3xl) 0 var(--spacing-lg);
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.footer-section h3,
+.footer-section h4 {
+  color: white;
+  margin-bottom: var(--spacing-md);
+  font-size: 1rem;
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: var(--spacing-sm);
+}
+
+.footer-links a {
+  color: var(--gray-400);
+  transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: var(--primary-light);
+}
+
+.footer-bottom {
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--gray-800);
+  text-align: center;
+  color: var(--gray-500);
+}
+`;

@@ -1,0 +1,17 @@
+{
+  "name": "parlevrai15",
+  "version": "1.0.0",
+  "description": "Apprendre à parler français en 15 minutes par jour",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}
