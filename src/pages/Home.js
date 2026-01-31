@@ -2,6 +2,7 @@ import router from '../router/index.js';
 import authService from '../services/auth.js';
 import { createHeader } from '../components/Header.js';
 import { createFooter } from '../components/Footer.js';
+import { trackFirstVisit } from '../services/analytics.js';
 
 /**
  * Page d'accueil (Landing Page)
@@ -11,6 +12,9 @@ export function renderHomePage() {
   const app = document.getElementById('app');
   
   app.innerHTML = '';
+  
+  // 📊 Tracker la première visite
+  trackFirstVisit();
   
   // Header
   const header = createHeader(authService.isAuthenticated(), authService.isAdmin());
