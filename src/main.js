@@ -9,6 +9,7 @@ import themeService from './services/theme.js';
 // Importer les pages
 import { renderHomePage, homePageStyles } from './pages/Home.js';
 import { renderLoginPage, renderSignupPage, authPageStyles } from './pages/Auth.js';
+import { renderAuthCallbackPage } from './pages/AuthCallback.js';
 import { renderDashboardPage, dashboardStyles } from './pages/Dashboard.js';
 import { renderLessonPage, lessonPageStyles } from './pages/Lesson.js';
 import { renderCalendarPage, calendarPageStyles } from './pages/Calendar.js';
@@ -22,7 +23,7 @@ import { footerStyles } from './components/Footer.js';
 /**
  * Initialiser l'application
  */
-function initApp() {
+async function initApp() {
   // Initialiser le thème
   themeService.loadTheme();
   
@@ -32,11 +33,36 @@ function initApp() {
   // Configurer les routes
   setupRoutes();
   
+  // Vérifier et restaurer la session Supabase
+  await checkAndRestoreSession();
+  
   // Vérifier l'authentification
   router.checkAuth();
   
   // Charger la route initiale
   router.handleRoute();
+}
+
+/**
+ * Vérifier et restaurer la session utilisateur au démarrage
+ */
+async function checkAndRestoreSession() {
+  try {
+    const result = await authService.checkSession();
+    
+    if (result.success && result.user) {
+      // Session restaurée avec succès
+      console.log('Session restaurée:', result.user.email);
+      router.setAuth(true, result.user.isAdmin);
+    } else {
+      // Pas de session active
+      console.log('Aucune session active');
+      router.setAuth(false, false);
+    }
+  } catch (error) {
+    console.error('Erreur lors de la vérification de session:', error);
+    router.setAuth(false, false);
+  }
 }
 
 /**
@@ -68,6 +94,7 @@ function setupRoutes() {
   router.addRoute('/', renderHomePage, false, false);
   router.addRoute('/login', renderLoginPage, false, false);
   router.addRoute('/signup', renderSignupPage, false, false);
+  router.addRoute('/auth/callback', renderAuthCallbackPage, false, false);
   
   // Routes authentifiées
   router.addRoute('/dashboard', renderDashboardPage, true, false);

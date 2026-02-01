@@ -27,7 +27,7 @@ export function renderLoginPage() {
           Bienvenue ! Connecte-toi pour continuer ta progression.
         </p>
         
-        <form id="login-form">
+        <form id="login-form" novalidate>
           <div class="form-group">
             <label for="email" class="form-label">Email</label>
             <input 
@@ -36,6 +36,8 @@ export function renderLoginPage() {
               class="form-input" 
               required
               placeholder="ton@email.com"
+              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+              autocomplete="email"
             />
           </div>
           
@@ -47,6 +49,7 @@ export function renderLoginPage() {
               class="form-input" 
               required
               placeholder="••••••••"
+              autocomplete="current-password"
             />
           </div>
           
@@ -81,11 +84,12 @@ export function renderLoginPage() {
 function attachLoginEvents() {
   const form = document.getElementById('login-form');
   const errorMessage = document.getElementById('error-message');
+  const submitButton = form.querySelector('button[type="submit"]');
   
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const email = document.getElementById('email').value;
+    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     
     // Validation simple
@@ -94,14 +98,26 @@ function attachLoginEvents() {
       return;
     }
     
-    // Connexion
-    const result = await authService.login(email, password);
+    // Désactiver le bouton pendant le traitement
+    submitButton.disabled = true;
+    submitButton.textContent = 'Connexion...';
+    errorMessage.classList.add('hidden');
     
-    if (result.success) {
-      router.setAuth(true, result.user.isAdmin);
-      router.navigate('/dashboard');
-    } else {
-      showError(result.error || 'Erreur de connexion');
+    try {
+      // Connexion
+      const result = await authService.login(email, password);
+      
+      if (result.success) {
+        router.setAuth(true, result.user.isAdmin);
+        router.navigate('/dashboard');
+      } else {
+        showError(result.error || 'Erreur de connexion');
+      }
+    } catch (error) {
+      showError('Une erreur inattendue s\'est produite');
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Se connecter';
     }
   });
   
@@ -135,7 +151,7 @@ export function renderSignupPage() {
           Commence à parler français dès aujourd'hui !
         </p>
         
-        <form id="signup-form">
+        <form id="signup-form" novalidate>
           <div class="form-group">
             <label for="name" class="form-label">Prénom</label>
             <input 
@@ -144,7 +160,11 @@ export function renderSignupPage() {
               class="form-input" 
               required
               placeholder="Marie"
+              minlength="2"
+              maxlength="50"
+              autocomplete="given-name"
             />
+            <small class="form-help">Au moins 2 caractères</small>
           </div>
           
           <div class="form-group">
@@ -155,7 +175,10 @@ export function renderSignupPage() {
               class="form-input" 
               required
               placeholder="ton@email.com"
+              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+              autocomplete="email"
             />
+            <small class="form-help">Format : exemple@domaine.com</small>
           </div>
           
           <div class="form-group">
@@ -167,7 +190,10 @@ export function renderSignupPage() {
               required
               placeholder="••••••••"
               minlength="6"
+              maxlength="72"
+              autocomplete="new-password"
             />
+            <small class="form-help">Minimum 6 caractères</small>
           </div>
           
           <div class="form-group">
@@ -179,6 +205,8 @@ export function renderSignupPage() {
               required
               placeholder="••••••••"
               minlength="6"
+              maxlength="72"
+              autocomplete="new-password"
             />
           </div>
           
@@ -213,45 +241,98 @@ export function renderSignupPage() {
 function attachSignupEvents() {
   const form = document.getElementById('signup-form');
   const errorMessage = document.getElementById('error-message');
+  const submitButton = form.querySelector('button[type="submit"]');
   
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
+    // Récupérer et nettoyer les valeurs
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim().toLowerCase();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
     
-    // Validation
-    if (!name || !email || !password || !confirmPassword) {
-      showError('Tous les champs sont requis');
+    // Validation du prénom
+    if (!name || name.length < 2) {
+      showError('Le prénom doit contenir au moins 2 caractères');
       return;
     }
     
+    // Validation de l'email
+    if (!email) {
+      showError('L\'email est requis');
+      return;
+    }
+    
+    // Validation format email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      showError('Format d\'email invalide. Utilisez le format : exemple@domaine.com');
+      return;
+    }
+    
+    // Validation du mot de passe
+    if (!password || password.length < 6) {
+      showError('Le mot de passe doit contenir au moins 6 caractères');
+      return;
+    }
+    
+    if (password.length > 72) {
+      showError('Le mot de passe ne peut pas dépasser 72 caractères');
+      return;
+    }
+    
+    // Vérifier que les mots de passe correspondent
     if (password !== confirmPassword) {
       showError('Les mots de passe ne correspondent pas');
       return;
     }
     
-    if (password.length < 6) {
-      showError('Le mot de passe doit contenir au moins 6 caractères');
-      return;
-    }
+    // Désactiver le bouton pendant le traitement
+    submitButton.disabled = true;
+    submitButton.textContent = 'Création du compte...';
+    errorMessage.classList.add('hidden');
     
-    // Inscription
-    const result = await authService.signup(email, password, name);
-    
-    if (result.success) {
-      router.setAuth(true, false);
-      router.navigate('/dashboard');
-    } else {
-      showError(result.error || 'Erreur lors de l\'inscription');
+    try {
+      // Inscription
+      const result = await authService.signup(email, password, name);
+      
+      if (result.success) {
+        // Si confirmation email nécessaire
+        if (result.needsEmailConfirmation) {
+          showSuccess('✅ Compte créé ! Vérifiez votre email pour confirmer votre inscription.');
+          setTimeout(() => {
+            router.navigate('/login');
+          }, 3000);
+        } else {
+          // Connexion directe si pas de confirmation requise
+          showSuccess('✅ Compte créé avec succès ! Redirection...');
+          router.setAuth(true, result.user?.isAdmin || false);
+          setTimeout(() => {
+            router.navigate('/dashboard');
+          }, 800);
+        }
+      } else {
+        showError(result.error || 'Erreur lors de l\'inscription');
+      }
+    } catch (error) {
+      showError('Une erreur inattendue s\'est produite');
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Créer mon compte';
     }
   });
   
   function showError(message) {
     errorMessage.textContent = message;
     errorMessage.classList.remove('hidden');
+    errorMessage.style.color = 'var(--color-error, #dc2626)';
+  }
+  
+  function showSuccess(message) {
+    errorMessage.textContent = message;
+    errorMessage.classList.remove('hidden');
+    errorMessage.style.color = 'var(--color-success, #16a34a)';
   }
 }
 
@@ -276,6 +357,26 @@ export const authPageStyles = `
 
 .auth-card h1 {
   margin-bottom: var(--spacing-sm);
+}
+
+.form-help {
+  display: block;
+  margin-top: var(--spacing-xs, 0.25rem);
+  font-size: 0.875rem;
+  color: var(--color-text-muted, #6b7280);
+  font-style: italic;
+}
+
+.form-input:focus + .form-help {
+  color: var(--color-primary, #3b82f6);
+}
+
+.form-input:invalid:not(:placeholder-shown) {
+  border-color: var(--color-error, #dc2626);
+}
+
+.form-input:valid:not(:placeholder-shown) {
+  border-color: var(--color-success, #16a34a);
 }
 
 @media (max-width: 640px) {

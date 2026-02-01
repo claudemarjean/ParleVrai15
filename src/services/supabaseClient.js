@@ -11,13 +11,26 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://VOTRE-PROJECT
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'VOTRE-ANON-KEY';
 
 /**
+ * Obtenir l'URL de redirection basée sur l'environnement
+ */
+function getRedirectUrl() {
+  // En production, utiliser l'URL actuelle du site
+  if (typeof window !== 'undefined') {
+    return `${window.location.origin}/auth/callback`;
+  }
+  return 'http://localhost:5173/auth/callback';
+}
+
+/**
  * Client Supabase partagé
  */
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: true
+    detectSessionInUrl: true,
+    // URL de redirection dynamique (s'adapte automatiquement à l'environnement)
+    redirectTo: getRedirectUrl()
   }
 });
 

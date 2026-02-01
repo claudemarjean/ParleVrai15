@@ -99,3 +99,22 @@ export const APP_CONFIG = {
   DESCRIPTION: 'Apprends à parler français naturellement avec seulement 15 minutes par jour.',
   VERSION: '1.0.0'
 };
+
+// Configuration Ivony
+export const IVONY_CONFIG = {
+  // ID de l'application ParleVrai15 dans la plateforme Ivony
+  APPLICATION_ID: 'c2036adf-59fe-4fdb-a019-7568b24fa8e1',
+  
+  // Rôles disponibles
+  ROLES: {
+    USER: 'user',
+    ADMIN: 'admin'
+  },
+  
+  // Status possibles
+  STATUS: {
+    ACTIVE: 'active',
+    INACTIVE: 'inactive',
+    SUSPENDED: 'suspended'
+  }
+};
