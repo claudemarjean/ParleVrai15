@@ -64,20 +64,24 @@ export function createHeader(isAuthenticated = false, isAdmin = false) {
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', async () => {
-        // Importer authService dynamiquement pour éviter les dépendances circulaires
+        // Importer authService et router dynamiquement pour éviter les dépendances circulaires
         const { default: authService } = await import('../services/auth.js');
+        const { default: router } = await import('../router/index.js');
         
         logoutBtn.disabled = true;
         logoutBtn.textContent = 'Déconnexion...';
         
         const result = await authService.logout();
         
-        if (!result.success) {
-          console.error('Erreur lors de la déconnexion');
+        if (result.success) {
+          console.log('✅ Déconnexion réussie');
+          // Rediriger vers la page d'accueil
+          router.navigate('/');
+        } else {
+          console.error('❌ Erreur lors de la déconnexion:', result.error);
           logoutBtn.disabled = false;
           logoutBtn.textContent = 'Déconnexion';
         }
-        // Si succès, authService déclenchera onAuthStateChange qui redirigera vers home
       });
     }
   }, 0);
