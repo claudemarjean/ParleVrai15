@@ -33,6 +33,9 @@ async function initApp() {
   // Configurer les routes
   setupRoutes();
   
+  // Connecter authService et router pour synchronisation automatique
+  setupAuthSync();
+  
   // Vérifier et restaurer la session Supabase
   await checkAndRestoreSession();
   
@@ -41,6 +44,20 @@ async function initApp() {
   
   // Charger la route initiale
   router.handleRoute();
+}
+
+/**
+ * Connecter authService et router pour synchronisation automatique
+ */
+function setupAuthSync() {
+  authService.onAuthStateChange((isAuthenticated, isAdmin) => {
+    router.setAuth(isAuthenticated, isAdmin);
+    
+    // Si déconnexion, rediriger vers la page d'accueil
+    if (!isAuthenticated) {
+      router.redirectToHome();
+    }
+  });
 }
 
 /**

@@ -79,24 +79,19 @@ class Router {
 
   /**
    * Vérifier l'authentification
+   * Cette méthode est appelée au démarrage de l'app
    */
   checkAuth() {
-    // TODO: Vérifier avec Supabase
-    const user = localStorage.getItem('user');
-    if (user) {
-      const userData = JSON.parse(user);
-      this.setAuth(true, userData.isAdmin || false);
-      return true;
-    }
-    return false;
+    // L'authentification est vérifiée par authService.checkSession()
+    // appelé dans main.js avant router.checkAuth()
+    // Cette méthode ne fait plus rien car la vérification est déléguée à authService
+    return this.isAuthenticated;
   }
 
   /**
-   * Déconnexion
+   * Rediriger vers la page d'accueil (après déconnexion)
    */
-  logout() {
-    localStorage.removeItem('user');
-    this.setAuth(false, false);
+  redirectToHome() {
     this.navigate('/');
   }
 }

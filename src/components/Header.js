@@ -49,13 +49,35 @@ export function createHeader(isAuthenticated = false, isAdmin = false) {
     </nav>
   `;
   
-  // Attacher l'événement de changement de thème
+  // Attacher les événements
   setTimeout(() => {
+    // Changement de thème
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
       themeToggle.addEventListener('click', () => {
         const newTheme = themeService.toggleTheme();
         themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      });
+    }
+    
+    // Déconnexion
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async () => {
+        // Importer authService dynamiquement pour éviter les dépendances circulaires
+        const { default: authService } = await import('../services/auth.js');
+        
+        logoutBtn.disabled = true;
+        logoutBtn.textContent = 'Déconnexion...';
+        
+        const result = await authService.logout();
+        
+        if (!result.success) {
+          console.error('Erreur lors de la déconnexion');
+          logoutBtn.disabled = false;
+          logoutBtn.textContent = 'Déconnexion';
+        }
+        // Si succès, authService déclenchera onAuthStateChange qui redirigera vers home
       });
     }
   }, 0);

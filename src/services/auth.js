@@ -10,6 +10,53 @@ class AuthService {
   constructor() {
     this.user = null;
     this.userAppAccess = null;
+    this.authStateChangeCallback = null;
+    this.setupAuthListener();
+  }
+
+  /**
+   * Écouter les changements d'état d'authentification Supabase
+   * Synchronise automatiquement l'état de l'app avec Supabase
+   */
+  setupAuthListener() {
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('🔔 Auth state changed:', event);
+      
+      if (event === 'SIGNED_IN' && session?.user) {
+        console.log('✅ Utilisateur connecté:', session.user.email);
+        await this.loadUserData(session.user.id);
+        await this.updateLastAccess(session.user.id);
+        
+        // Notifier le router du changement
+        if (this.authStateChangeCallback) {
+          this.authStateChangeCallback(true, this.user?.isAdmin || false);
+        }
+      } else if (event === 'SIGNED_OUT') {
+        console.log('👋 Utilisateur déconnecté');
+        this.user = null;
+        this.userAppAccess = null;
+        
+        // Notifier le router du changement
+        if (this.authStateChangeCallback) {
+          this.authStateChangeCallback(false, false);
+        }
+      } else if (event === 'TOKEN_REFRESHED') {
+        console.log('🔄 Token rafraîchi');
+      } else if (event === 'USER_UPDATED') {
+        console.log('📝 Utilisateur mis à jour');
+        if (session?.user) {
+          await this.loadUserData(session.user.id);
+        }
+      }
+    });
+  }
+
+  /**
+   * Enregistrer un callback pour les changements d'état d'auth
+   * Utilisé par le router pour se synchroniser
+   */
+  onAuthStateChange(callback) {
+    this.authStateChangeCallback = callback;
   }
 
   /**
