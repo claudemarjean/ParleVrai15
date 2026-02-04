@@ -29,16 +29,16 @@ export function renderLoginPage() {
         
         <form id="login-form" novalidate>
           <div class="form-group">
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label">Email ou Téléphone</label>
             <input 
-              type="email" 
+              type="text" 
               id="email" 
               class="form-input" 
               required
-              placeholder="ton@email.com"
-              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+              placeholder="ton@email.com ou 0612345678"
               autocomplete="email"
             />
+            <small class="form-help">Utilisez votre email ou numéro de téléphone</small>
           </div>
           
           <div class="form-group">
@@ -182,6 +182,19 @@ export function renderSignupPage() {
           </div>
           
           <div class="form-group">
+            <label for="phone" class="form-label">Téléphone mobile (optionnel)</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              class="form-input" 
+              placeholder="0612345678"
+              pattern="[0-9]{10}"
+              autocomplete="tel"
+            />
+            <small class="form-help">Format : 10 chiffres sans espaces</small>
+          </div>
+          
+          <div class="form-group">
             <label for="password" class="form-label">Mot de passe</label>
             <input 
               type="password" 
@@ -249,6 +262,7 @@ function attachSignupEvents() {
     // Récupérer et nettoyer les valeurs
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim().toLowerCase();
+    const phone = document.getElementById('phone').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
     
@@ -268,6 +282,12 @@ function attachSignupEvents() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       showError('Format d\'email invalide. Utilisez le format : exemple@domaine.com');
+      return;
+    }
+    
+    // Validation du téléphone si fourni
+    if (phone && !/^[0-9]{10}$/.test(phone)) {
+      showError('Le numéro de téléphone doit contenir exactement 10 chiffres');
       return;
     }
     
@@ -295,7 +315,7 @@ function attachSignupEvents() {
     
     try {
       // Inscription
-      const result = await authService.signup(email, password, name);
+      const result = await authService.signup(email, password, name, phone);
       
       if (result.success) {
         // Si confirmation email nécessaire

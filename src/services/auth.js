@@ -62,13 +62,14 @@ class AuthService {
   /**
    * Inscription d'un nouvel utilisateur
    * 1. Crée le compte dans Supabase Auth
-   * 2. Crée l'entrée dans ivony_users_apps
+   * 2. Crée l'entrée dans ivony_users_apps avec le téléphone
    */
-  async signup(email, password, name) {
+  async signup(email, password, name, phoneNumber = null) {
     try {
       // Nettoyer et normaliser l'email
       const cleanEmail = email.trim().toLowerCase();
       const cleanName = name.trim();
+      const cleanPhone = phoneNumber ? phoneNumber.trim() : null;
       
       // Validation côté service (sécurité supplémentaire)
       if (!cleanEmail || !cleanName || !password) {
@@ -95,6 +96,35 @@ class AuthService {
         };
       }
       
+      // Vérifier si le numéro de téléphone existe déjà
+      if (cleanPhone) {
+        console.log('🔍 Vérification doublon téléphone:', cleanPhone);
+        
+        const { data: existingPhones, error: phoneCheckError } = await supabase
+          .from('ivony_users_apps')
+          .select('id, phone_number')
+          .eq('application_id', IVONY_CONFIG.APPLICATION_ID)
+          .eq('phone_number', cleanPhone);
+        
+        if (phoneCheckError) {
+          console.error('❌ Erreur vérification téléphone:', phoneCheckError);
+          return {
+            success: false,
+            error: 'Erreur lors de la vérification du numéro de téléphone'
+          };
+        }
+        
+        if (existingPhones && existingPhones.length > 0) {
+          console.warn('⚠️ Numéro de téléphone déjà utilisé:', cleanPhone);
+          return {
+            success: false,
+            error: 'Ce numéro de téléphone est déjà associé à un compte'
+          };
+        }
+        
+        console.log('✅ Numéro de téléphone disponible');
+      }
+      
       console.log('📝 Tentative d\'inscription pour:', cleanEmail);
       
       // Étape 1 : Inscription avec Supabase Auth
@@ -103,7 +133,8 @@ class AuthService {
         password: password,
         options: {
           data: {
-            name: cleanName
+            name: cleanName,
+            phone: cleanPhone
           }
         }
       });
@@ -127,7 +158,7 @@ class AuthService {
       console.log('✅ Utilisateur créé dans Supabase Auth:', authData.user.id);
 
       // Étape 2 : Créer l'accès à l'application dans ivony_users_apps
-      const accessResult = await this.ensureUserAppAccess(authData.user.id);
+      const accessResult = await this.ensureUserAppAccess(authData.user.id, cleanPhone, cleanEmail);
       
       if (!accessResult.success) {
         console.error('⚠️ Erreur création accès app:', accessResult.error);
@@ -155,43 +186,143 @@ class AuthService {
 
   /**
    * Connexion d'un utilisateur existant
-   * 1. Authentifie avec Supabase Auth
+   * 1. Authentifie avec Supabase Auth (email ou téléphone)
    * 2. Vérifie/crée l'accès dans ivony_users_apps
    * 3. Vérifie que le status est 'active'
    */
-  async login(email, password) {
+  async login(identifier, password) {
     try {
-      // Nettoyer et normaliser l'email
-      const cleanEmail = email.trim().toLowerCase();
+      // Nettoyer l'identifiant
+      const cleanIdentifier = identifier.trim();
       
-      console.log('🔐 Tentative de connexion pour:', cleanEmail);
+      // Déterminer si c'est un email ou un téléphone
+      const isEmail = cleanIdentifier.includes('@');
+      let userEmail = null;
       
-      // Étape 1 : Connexion avec Supabase Auth
-      const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({
-        email: cleanEmail,
-        password
-      });
-
-      if (signInError) {
-        console.error('❌ Erreur signIn:', signInError);
-        return { 
-          success: false, 
-          error: this.formatAuthError(signInError) 
-        };
+      if (isEmail) {
+        // Connexion par email
+        userEmail = cleanIdentifier.toLowerCase();
+        console.log('🔐 Tentative de connexion par email:', userEmail);
+        
+        const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({
+          email: userEmail,
+          password
+        });
+        
+        if (signInError) {
+          console.error('❌ Erreur signIn:', signInError);
+          return { 
+            success: false, 
+            error: this.formatAuthError(signInError) 
+          };
+        }
+        
+        if (!authData.user) {
+          console.error('❌ Pas d\'utilisateur retourné par Supabase');
+          return { 
+            success: false, 
+            error: 'Erreur lors de la connexion' 
+          };
+        }
+        
+        return await this.completeLogin(authData.user.id, userEmail);
+      } else {
+        // Connexion par téléphone - chercher l'utilisateur dans ivony_users_apps
+        console.log('🔐 Tentative de connexion par téléphone:', cleanIdentifier);
+        console.log('🔍 APPLICATION_ID utilisé:', IVONY_CONFIG.APPLICATION_ID);
+        
+        // Récupérer tous les utilisateurs de cette app et filtrer par téléphone
+        const { data: userAppsList, error: lookupError } = await supabase
+          .from('ivony_users_apps')
+          .select('user_id, metadata, phone_number, application_id')
+          .eq('phone_number', cleanIdentifier);
+        
+        console.log('📊 Résultat recherche téléphone (sans filtre app):', { 
+          userAppsList, 
+          lookupError,
+          cleanIdentifier 
+        });
+        
+        if (lookupError) {
+          console.error('❌ Erreur recherche téléphone:', lookupError);
+          return { 
+            success: false, 
+            error: 'Erreur lors de la recherche du numéro de téléphone' 
+          };
+        }
+        
+        if (!userAppsList || userAppsList.length === 0) {
+          console.error('❌ Numéro de téléphone non trouvé dans la base');
+          return { 
+            success: false, 
+            error: 'Identifiant ou mot de passe incorrect' 
+          };
+        }
+        
+        // Filtrer par application_id manuellement si plusieurs résultats
+        const userAppAccess = userAppsList.find(
+          app => app.application_id === IVONY_CONFIG.APPLICATION_ID
+        ) || userAppsList[0];
+        
+        console.log('📱 Données utilisateur trouvées:', userAppAccess);
+        
+        // L'email devrait être stocké dans metadata lors de l'inscription
+        if (userAppAccess.metadata?.email) {
+          userEmail = userAppAccess.metadata.email;
+          console.log('✅ Email trouvé dans metadata:', userEmail);
+        } else {
+          // Fallback: pas d'email dans metadata, impossible de se connecter par téléphone
+          console.error('❌ Email non trouvé dans metadata pour ce téléphone');
+          console.log('Metadata disponible:', userAppAccess.metadata);
+          return {
+            success: false,
+            error: 'Connexion par téléphone non disponible. Utilisez votre email.'
+          };
+        }
+        
+        // Se connecter avec l'email trouvé
+        const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({
+          email: userEmail,
+          password
+        });
+        
+        if (signInError) {
+          console.error('❌ Erreur signIn:', signInError);
+          return { 
+            success: false, 
+            error: this.formatAuthError(signInError) 
+          };
+        }
+        
+        if (!authData.user) {
+          console.error('❌ Pas d\'utilisateur retourné par Supabase');
+          return { 
+            success: false, 
+            error: 'Erreur lors de la connexion' 
+          };
+        }
+        
+        return await this.completeLogin(authData.user.id, userEmail);
       }
+    } catch (error) {
+      console.error('❌ Erreur inattendue login:', error);
+      return { 
+        success: false, 
+        error: 'Une erreur inattendue s\'est produite' 
+      };
+    }
+  }
+  
+  /**
+   * Compléter le processus de connexion
+   */
+  async completeLogin(userId, email) {
+    try {
 
-      if (!authData.user) {
-        console.error('❌ Pas d\'utilisateur retourné par Supabase');
-        return { 
-          success: false, 
-          error: 'Erreur lors de la connexion' 
-        };
-      }
-
-      console.log('✅ Authentification réussie:', authData.user.id);
+      console.log('✅ Authentification réussie:', userId);
 
       // Étape 2 : Vérifier/créer l'accès à l'application
-      const accessResult = await this.ensureUserAppAccess(authData.user.id);
+      const accessResult = await this.ensureUserAppAccess(userId);
       
       if (!accessResult.success) {
         console.error('❌ Erreur accès application:', accessResult.error);
@@ -212,19 +343,19 @@ class AuthService {
       }
 
       // Charger les données complètes de l'utilisateur
-      await this.loadUserData(authData.user.id);
+      await this.loadUserData(userId);
 
       // Mettre à jour last_access_at
-      await this.updateLastAccess(authData.user.id);
+      await this.updateLastAccess(userId);
 
-      console.log('✅ Connexion réussie pour:', cleanEmail);
+      console.log('✅ Connexion réussie pour:', email);
 
       return { 
         success: true, 
         user: this.user 
       };
     } catch (error) {
-      console.error('❌ Erreur inattendue login:', error);
+      console.error('❌ Erreur completeLogin:', error);
       return { 
         success: false, 
         error: 'Une erreur inattendue s\'est produite' 
@@ -236,7 +367,7 @@ class AuthService {
    * Vérifier ou créer l'accès de l'utilisateur à l'application
    * dans la table ivony_users_apps
    */
-  async ensureUserAppAccess(userId) {
+  async ensureUserAppAccess(userId, phoneNumber = null, email = null) {
     try {
       console.log('🔍 Vérification accès app pour user:', userId);
       
@@ -264,15 +395,27 @@ class AuthService {
       console.log('➕ Création d\'un nouvel accès dans ivony_users_apps...');
 
       // Sinon, créer un nouvel accès
+      const insertData = {
+        user_id: userId,
+        application_id: IVONY_CONFIG.APPLICATION_ID,
+        role: IVONY_CONFIG.ROLES.USER,
+        status: IVONY_CONFIG.STATUS.ACTIVE,
+        metadata: {}
+      };
+      
+      // Ajouter le téléphone si fourni
+      if (phoneNumber) {
+        insertData.phone_number = phoneNumber;
+      }
+      
+      // Stocker l'email dans metadata pour permettre la connexion par téléphone
+      if (email) {
+        insertData.metadata.email = email;
+      }
+      
       const { data: newAccess, error: insertError } = await supabase
         .from('ivony_users_apps')
-        .insert({
-          user_id: userId,
-          application_id: IVONY_CONFIG.APPLICATION_ID,
-          role: IVONY_CONFIG.ROLES.USER,
-          status: IVONY_CONFIG.STATUS.ACTIVE,
-          metadata: {}
-        })
+        .insert(insertData)
         .select()
         .single();
 
